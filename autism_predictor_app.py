@@ -41,13 +41,15 @@ st.markdown("**Note:** This tool is for educational purposes only and not a subs
 st.markdown(
     """
     🩺 **Note:**  
-    This project is part of an ongoing research effort and remains in a **preliminary phase**.
+    This tool is built using features derived from the **2023 National Survey of Children’s Health (NSCH)**  
+    and remains in a **preliminary research phase**.
 
-    If you are interested in this work or wish to contribute to the research,  
+    If you are interested in this work or would like to support the research,  
     please search for **Rabia Endris** on LinkedIn.
     """,
     unsafe_allow_html=True
 )
+
 
 
 # Collect user input
