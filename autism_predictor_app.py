@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import json
 
 # Load model and supporting artifacts
 model = joblib.load("autism_random_forest_model.pkl")
