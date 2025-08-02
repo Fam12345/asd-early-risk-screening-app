@@ -126,8 +126,8 @@ if st.button("🔍 Predict Autism Likelihood"):
         prediction = model.predict(scaled)[0]
         proba = model.predict_proba(scaled)[0][1]
         if prediction == 1:
-            st.error(f"🧩 High likelihood of autism (Confidence: {proba:.2%})")
+            st.error(f"🧩 Likelihood of autism (Confidence: {proba:.2%})")
         else:
-            st.success(f"✅ Low likelihood of autism (Confidence: {1 - proba:.2%})")
+            st.success(f"✅ Likelihood of autism (Confidence: {1 - proba:.2%})")
     except Exception as e:
         st.error(f"Prediction failed: {str(e)}")
