@@ -4,27 +4,26 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import joblib
+import json
 
-# Load your trained model and scaler
-model = joblib.load("autism_random_forest_model.pkl")
-scaler = joblib.load("autism_scaler.pkl")
+# Load model, scaler, and feature columns
+model = joblib.load("model.pkl")              # Trained Random Forest model
+scaler = joblib.load("scaler.pkl")            # StandardScaler
+with open("feature_columns.json", "r") as f:
+    feature_columns = json.load(f)            # List of column names in training order
 
+# App setup
 st.set_page_config(page_title="Autism Screening", layout="centered")
-
-# App title and disclaimer
 st.title("🧠 Early Autism Screening Tool")
 
-st.markdown(
-    """
-    **⚠️ Disclaimer:**  
-    This tool is for **educational and awareness purposes only**.  
-    It does **not provide a medical diagnosis**.  
-    Please consult a licensed pediatrician, psychologist, or developmental specialist for any concerns about autism.
-    """,
-    unsafe_allow_html=True
-)
+st.markdown("""
+**⚠️ Disclaimer:**  
+This tool is for **educational and awareness purposes only**.  
+It does **not provide a medical diagnosis**.  
+Please consult a licensed pediatrician, psychologist, or developmental specialist for any concerns about autism.
+""", unsafe_allow_html=True)
 
-# Define user input fields
+# Form inputs
 st.header("📋 Child Information")
 
 age = st.slider("Age of child (in years)", min_value=0, max_value=17, value=5)
@@ -42,15 +41,10 @@ st.header("⚕️ Health & Behavior")
 speech_concern = st.selectbox("Concern: Speech delay?", ["No", "Yes"])
 interaction_concern = st.selectbox("Concern: Social interaction?", ["No", "Yes"])
 word_phrase_concern = st.selectbox("Concern: Use of words/phrases?", ["No", "Yes"])
-maternal_mental_health = st.selectbox(
-    "Maternal mental health",
-    ["Good", "Average", "Poor"]
-)
+maternal_mental_health = st.selectbox("Maternal mental health", ["Good", "Average", "Poor"])
 
-# Prepare input data
+# When user clicks "Predict"
 if st.button("🔍 Predict Autism Likelihood"):
-
-    # Map inputs
     input_dict = {
         "Age": age,
         "Sex_Label": 1 if sex == "Male" else 0,
@@ -70,15 +64,20 @@ if st.button("🔍 Predict Autism Likelihood"):
             "Good": 0,
             "Average": 1,
             "Poor": 2
-        }[maternal_mental_health],
+        }[maternal_mental_health]
     }
 
     input_df = pd.DataFrame([input_dict])
 
-    # Scale
-    input_scaled = scaler.transform(input_df)
+    # Align with training features
+    try:
+        input_df = input_df[feature_columns]
+    except KeyError as e:
+        st.error(f"Feature mismatch: {e}")
+        st.stop()
 
-    # Predict
+    # Scale and predict
+    input_scaled = scaler.transform(input_df)
     prediction = model.predict(input_scaled)[0]
     proba = model.predict_proba(input_scaled)[0][1]
 
@@ -89,4 +88,4 @@ if st.button("🔍 Predict Autism Likelihood"):
         st.success(f"✅ Low likelihood of autism. (Confidence: {1 - proba:.2%})")
 
     st.markdown("---")
-    st.markdown("Remember: This tool does not replace professional medical advice.")
+    st.markdown("This is an educational tool. Always consult medical professionals for diagnosis.")
