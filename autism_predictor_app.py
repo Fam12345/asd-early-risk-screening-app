@@ -35,7 +35,20 @@ def encode_binary(val):
 # Page settings
 st.set_page_config(page_title="Autism Predictor", layout="wide")
 st.title("🧠 Comprehensive Autism Screening Tool")
+
 st.markdown("**Note:** This tool is for educational purposes only and not a substitute for professional diagnosis.")
+
+st.markdown(
+    """
+    🩺 **Note:**  
+    This project is part of an ongoing research effort and remains in a **preliminary phase**.
+
+    If you are interested in this work or wish to contribute to the research,  
+    please search for **Rabia Endris** on LinkedIn.
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Collect user input
 inputs = {}
