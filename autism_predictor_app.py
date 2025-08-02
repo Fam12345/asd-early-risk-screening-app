@@ -7,8 +7,9 @@ import joblib
 import json
 
 # Load model, scaler, and feature columns
-model = joblib.load("model.pkl")              # Trained Random Forest model
-scaler = joblib.load("scaler.pkl")            # StandardScaler
+model = joblib.load("autism_random_forest_model.pkl")
+scaler = joblib.load("autism_scaler.pkl")
+
 with open("feature_columns.json", "r") as f:
     feature_columns = json.load(f)            # List of column names in training order
 
