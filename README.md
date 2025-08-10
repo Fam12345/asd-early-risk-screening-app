@@ -1,43 +1,44 @@
-# 🧠 Autism Early Screening Tool
+# asd early risk screening app
 
-This is a **Streamlit-based web app** built to support awareness and early screening of autism-related behavioral and developmental traits in children. It uses a machine learning model trained on data from the **2023 National Survey of Children’s Health (NSCH)**, with 36 predictors drawn from family, health, developmental, and environmental indicators.
+Predict early risk of autism spectrum disorder using a supervised model trained on the 2023 National Survey of Children's Health (NSCH) dataset. This project combines rigorous data science—feature selection, class‑imbalance handling, model evaluation—with careful ML engineering, packaging the model into a reproducible Streamlit application.
 
----
+## data science
 
-## 🧪 Research Status
+- Extracted and cleaned 36 predictors from the NSCH dataset covering family, health, developmental and environmental factors.
+- Balanced the minority class with SMOTE and tuned hyperparameters to optimize the Random Forest classifier.
+- Evaluated performance using cross‑validation, precision–recall curves, and explained model behaviour with SHAP.
 
-This tool is part of a **preliminary research project**. It is **not a diagnostic tool**. The predictions it generates are for **educational and awareness** purposes only.
+## ml engineering
 
-A pediatric nurse is featured in the app to remind users that **screening is not diagnosis**—professional evaluation is essential.
+- Built a Streamlit web app that serves the trained model with real‑time predictions and visual explanations.
+- Encapsulated preprocessing (scaling, one‑hot encoding) and model inference in reusable scripts (`autism_predictor_app.py`) and pickled artefacts (`autism_random_forest_model.pkl`, `autism_scaler.pkl`).
+- Provided a GitHub Actions workflow template for automated testing, linting, and container builds.
 
-**If you're interested in this research or want to support it, find Rabia Endris on LinkedIn.**
+## repository structure
 
----
+| path | description |
+| --- | --- |
+| `autism_predictor_app.py` | Streamlit application exposing the model and explanation plots |
+| `autism_random_forest_model.pkl` | Serialized Random Forest classifier |
+| `autism_scaler.pkl` | Fitted scaler used for input normalization |
+| `feature_columns.json` | JSON file listing the exact set of feature names expected by the model |
+| `categorical_distributions.json` | Categorical distribution values used for default inputs |
+| `data/` | Contains the NSCH codebook and reference data |
+| `requirements.txt` | Python dependencies |
 
-## 📁 Repository Contents
+## running the app locally
 
-- `autism_predictor_app.py` — the Streamlit application code
-- `autism_random_forest_model.pkl` — trained Random Forest classifier
-- `autism_scaler.pkl` — `StandardScaler` used for input normalization
-- `feature_columns.json` — JSON file listing the exact 36 model input features
-- `Fully_Categorized_Autism_Variables.csv` — categorical training inputs
-- `CAHMI DRC 2023 NSCH SPSS Codebook.pdf` — original codebook from the national survey
+Clone the repo and install dependencies:
 
----
-
-## 🧮 Model Summary
-
-- **Algorithm**: Random Forest (scikit-learn)
-- **Inputs**: 36 categorical and numeric child/family characteristics
-- **Output**: Binary classification (High/Low likelihood of autism) with confidence
-- **Data Source**: 2023 National Survey of Children’s Health (NSCH)
-- **Frameworks**: `streamlit`, `pandas`, `scikit-learn`, `joblib`
-
----
-
-## 💻 Run the App Locally
-
-### 1. Clone this repository
 ```bash
-git clone https://github.com/Fam12345/Autism_Predictor.git
-cd Autism_Predictor
+git clone https://github.com/Fam12345/asd‑early‑risk‑screening‑app
+cd asd‑early‑risk‑screening‑app
+pip install -r requirements.txt
+streamlit run autism_predictor_app.py
+```
+
+A web page will open where you can fill out survey responses and view the predicted risk score along with model explanations.
+
+---
+
+This tool is for educational research purposes only; it is *not* a diagnostic instrument. Please consult healthcare professionals for clinical assessment.
